@@ -8,7 +8,7 @@ from airflow.providers.postgres.operators.postgres import PostgresOperator
 vendor_data_url = "https://raw.githubusercontent.com/LineaLabs/platform-demo/main/fraud-detection/data/PS_20174392719_1491204439457_log_v2.csv"
 with DAG(
     dag_id="fraud_detection_reset",
-    start_date=datetime.datetime(2023, 8, 21),
+    start_date=datetime.datetime(2023, 8, 26),
     schedule="@once",
     catchup=False,
     tags=["fraud_detection"],
