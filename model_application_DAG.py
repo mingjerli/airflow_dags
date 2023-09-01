@@ -1,8 +1,6 @@
-from airflow.decorators import dag, task
 import datetime
-import pickle
-from airflow.providers.postgres.hooks.postgres import PostgresHook
-from airflow.providers.amazon.aws.hooks.s3 import S3Hook
+
+from airflow.decorators import dag, task
 
 
 def read_airflow_query(sql_query):
@@ -14,8 +12,9 @@ def read_airflow_query(sql_query):
 
 
 def read_s3_pickle_file(s3_key, s3_bucket):
-    from airflow.providers.amazon.aws.hooks.s3 import S3Hook
     import pickle
+
+    from airflow.providers.amazon.aws.hooks.s3 import S3Hook
 
     s3hook = S3Hook()
     file_obj = s3hook.get_key(key=s3_key, bucket_name=s3_bucket)
@@ -31,8 +30,6 @@ def update_sql_table(sql_query, data):
     cursor.executemany(sql_query, data)
     conn.commit()
     conn.close()
-    ## If we use the following code instead previous five lines of code, the result should always None since the update is not committed.
-    # pshook.get_conn().cursor().executemany(sql, data)
 
 
 @dag(
@@ -59,21 +56,13 @@ def fraud_detection_model_application():
             random_forest_classifier = read_s3_pickle_file(
                 s3_key="random_forest_model", s3_bucket="fraud-detection-pipeline-data"
             )
-
             pred = random_forest_classifier.predict_log_proba(data.values)[:, 0]
-            data = [
-                (int(pred[i]), int(idx)) for i, idx in enumerate(index["index"].values)
-            ]
+            data = [(int(pred[i]), int(idx)) for i, idx in enumerate(index["index"].values)]
             sql = "UPDATE fraud_detection_features SET isflaggedfraud = %s WHERE index = %s;"
-
             update_sql_table(sql, data)
 
-    # [START main_flow]
     get_data = task_get_fraud_detection_data()
-    upload_results = task_upload_fraud_detection_model_result(get_data)
-    # [END main_flow]
+    task_upload_fraud_detection_model_result(get_data)
 
 
-# [START dag_invocation]
 fraud_detection_model_application()
-# [END dag_invocation]
