@@ -45,7 +45,7 @@ def clean_fraud_detection_new_data(rawdata):
 
 
 def split_fraud_detection_data():
-    print("new function as 2023-09-01T14:11:18.042170")
+    print("new function as 2023-09-01T14:15:06.184985")
 
 
 def get_fraud_detection_model(X_train, y_train):
