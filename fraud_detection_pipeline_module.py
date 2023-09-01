@@ -54,9 +54,8 @@ def get_fraud_detection_model(X_train, y_train):
     return random_forest_classifier
 
 
-def get_fraud_detection_predictions(random_forest_classifier, X_test):
-    rfc_pred = random_forest_classifier.predict(X_test)
-    return rfc_pred
+def get_fraud_detection_predictions():
+    print("new new function as 2023-09-01T17:31:07.460280")
 
 
 def get_fraud_detection_performance_report(rfc_pred, y_test):
