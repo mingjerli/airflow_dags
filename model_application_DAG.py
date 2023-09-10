@@ -30,7 +30,7 @@ def update_sql_table(sql_query, data):
     cursor.executemany(sql_query, data)
     conn.commit()
     conn.close()
-    print("modify the function")
+    print("modify the function again")
 
 
 @dag(
