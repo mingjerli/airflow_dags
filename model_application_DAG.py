@@ -57,7 +57,7 @@ def fraud_detection_model_application():
                 s3_key="random_forest_model", s3_bucket="fraud-detection-pipeline-data"
             )
             pred = random_forest_classifier.predict_log_proba(data.values)[:, 0]
-            data = [(int(pred[i]), int(idx)) for (i, idx) in enumerate(index["index"].values)]
+            data = [(int(pred[i]), int(idx)) for i, idx in enumerate(index["index"].values)]
             sql = "UPDATE fraud_detection_features SET isflaggedfraud = %s WHERE index = %s;"
             update_sql_table(sql, data)
 
