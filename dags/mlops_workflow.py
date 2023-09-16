@@ -13,7 +13,7 @@ default_args = {"owner": "mavencode", "start_date": pendulum.datetime(2023, 9, 5
     max_active_runs=1,
     tags=["mlops"],
 )
-def mlops_pipeline():
+def mlops_workflow():
     """
     Apache Airflow DAG for running a workflow to ingest data, preprocess data, train model and evaluate model
     """
