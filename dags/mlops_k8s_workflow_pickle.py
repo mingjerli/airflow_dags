@@ -57,11 +57,11 @@ def mlops_workflow():
         service_account_name="airflow-sa",
     )
     def data_preprocessing_op(ingested_data_path):
-        from components.data_preprocessing import data_preprocessing
+        from components.data_preprocessing import data_preprocessing_raw
         from components.s3io import pickle_s3, unpickle_s3
 
         ingested_data = unpickle_s3(ingested_data_path)
-        processed_data = data_preprocessing(ingested_data)
+        processed_data = data_preprocessing_raw(ingested_data)
         processed_data_path = "s3://mjlpvc/xcml/processed_data.pkl"
         pickle_s3(processed_data, processed_data_path)
         return processed_data_path
@@ -81,11 +81,11 @@ def mlops_workflow():
         service_account_name="airflow-sa",
     )
     def model_training_op(processed_data_path):
-        from components.model_training import model_training
+        from components.model_training import model_training_raw
         from components.s3io import pickle_s3, unpickle_s3
 
         processed_data = unpickle_s3(processed_data_path)
-        model = model_training(processed_data)
+        model = model_training_raw(processed_data)
         model_path = "s3://mjlpvc/xcml/model.pkl"
         pickle_s3(model, model_path)
         return model_path

@@ -11,3 +11,12 @@ def model_training(processed_data):
     model_path = "model.joblib"
     dump(model, model_path)
     return model_path
+
+
+def model_training_raw(processed_data):
+    from sklearn.linear_model import LinearRegression
+
+    X_train = processed_data["X_train"]
+    y_train = processed_data["y_train"]
+    LinearRegression().fit(X_train, y_train)
+    return model_path
