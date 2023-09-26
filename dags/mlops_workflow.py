@@ -2,7 +2,7 @@ import pendulum
 from airflow.decorators import dag
 from airflow.operators.python_operator import PythonOperator
 
-default_args = {"owner": "mavencode", "start_date": pendulum.datetime(2023, 9, 5, tz="UTC"), "depends_on_past": False}
+default_args = {"owner": "randomguy", "start_date": pendulum.datetime(2023, 9, 5, tz="UTC"), "depends_on_past": False}
 
 
 @dag(
@@ -42,9 +42,7 @@ def mlops_workflow():
         result = model_evaluation(model_path, processed_data)
         return result
 
-    input_data = (
-        "https://raw.githubusercontent.com/MavenCode/MLOpsTraining-Dec2022/master/data/telco/churn_modeling.csv"
-    )
+    input_data = "https://raw.githubusercontent.com/sharmaroshan/Churn-Modelling-Dataset/master/Churn_Modelling.csv"
     ingested_data_task = PythonOperator(
         task_id="data_ingestion_op", python_callable=data_ingestion_op, op_args=[input_data], provide_context=True
     )
