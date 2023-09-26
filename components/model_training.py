@@ -18,5 +18,5 @@ def model_training_raw(processed_data):
 
     X_train = processed_data["X_train"]
     y_train = processed_data["y_train"]
-    LinearRegression().fit(X_train, y_train)
-    return model_path
+    model = LinearRegression().fit(X_train, y_train)
+    return model
