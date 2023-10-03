@@ -6,9 +6,9 @@ default_args = {"owner": "randomguy", "start_date": pendulum.datetime(2023, 9, 5
 
 
 @dag(
-    dag_id="mlops_pipeline",
+    dag_id="""mlops_pipeline""",
     default_args=default_args,
-    description="MLOps Pipeline",
+    description="""MLOps Pipeline""",
     schedule_interval=None,
     max_active_runs=1,
     tags=["mlops"],
@@ -44,22 +44,22 @@ def mlops_workflow():
 
     input_data = "https://raw.githubusercontent.com/sharmaroshan/Churn-Modelling-Dataset/master/Churn_Modelling.csv"
     ingested_data_task = PythonOperator(
-        task_id="data_ingestion_op", python_callable=data_ingestion_op, op_args=[input_data], provide_context=True
+        task_id="""data_ingestion_op""", python_callable=data_ingestion_op, op_args=[input_data], provide_context=True
     )
     preprocessed_data_task = PythonOperator(
-        task_id="data_preprocessing_op",
+        task_id="""data_preprocessing_op""",
         python_callable=data_preprocessing_op,
         op_args=[ingested_data_task.output],
         provide_context=True,
     )
     trained_model_task = PythonOperator(
-        task_id="model_training_op",
+        task_id="""model_training_op""",
         python_callable=model_training_op,
         op_args=[preprocessed_data_task.output],
         provide_context=True,
     )
     model_evaluation_result_task = PythonOperator(
-        task_id="model_evaluation_op",
+        task_id="""model_evaluation_op""",
         python_callable=model_evaluation_op,
         op_args=[trained_model_task.output, preprocessed_data_task.output],
         provide_context=True,
