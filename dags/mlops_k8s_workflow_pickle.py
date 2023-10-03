@@ -7,9 +7,9 @@ mlops_base_image = "mingjerli/mlops_base_image"
 
 
 @dag(
-    dag_id="mlops_pipeline_k8s_s3",
+    dag_id="""mlops_pipeline_k8s_s3""",
     default_args=default_args,
-    description="MLOps Pipeline K8S",
+    description="""MLOps Pipeline K8S""",
     schedule_interval=None,
     max_active_runs=1,
     tags=["mlops"],
@@ -21,8 +21,8 @@ def mlops_workflow():
 
     @task.kubernetes(
         image=mlops_base_image,
-        task_id="data_ingestion_op",
-        namespace="airflow",
+        task_id="""data_ingestion_op""",
+        namespace="""airflow""",
         in_cluster=True,
         get_logs=True,
         do_xcom_push=True,
@@ -31,7 +31,7 @@ def mlops_workflow():
             "AWS_SECRET_ACCESS_KEY": Variable.get("AWS_SECRET_ACCESS_KEY"),
         },
         startup_timeout_seconds=300,
-        service_account_name="airflow-sa",
+        service_account_name="""airflow-sa""",
     )
     def data_ingestion_op(input_data):
         from components.data_ingestion import data_ingestion
@@ -44,8 +44,8 @@ def mlops_workflow():
 
     @task.kubernetes(
         image=mlops_base_image,
-        task_id="data_preprocessing_op",
-        namespace="airflow",
+        task_id="""data_preprocessing_op""",
+        namespace="""airflow""",
         in_cluster=True,
         get_logs=True,
         do_xcom_push=True,
@@ -54,7 +54,7 @@ def mlops_workflow():
             "AWS_SECRET_ACCESS_KEY": Variable.get("AWS_SECRET_ACCESS_KEY"),
         },
         startup_timeout_seconds=300,
-        service_account_name="airflow-sa",
+        service_account_name="""airflow-sa""",
     )
     def data_preprocessing_op(ingested_data_path):
         from components.data_preprocessing import data_preprocessing_raw
@@ -68,8 +68,8 @@ def mlops_workflow():
 
     @task.kubernetes(
         image=mlops_base_image,
-        task_id="model_training_op",
-        namespace="airflow",
+        task_id="""model_training_op""",
+        namespace="""airflow""",
         in_cluster=True,
         get_logs=True,
         do_xcom_push=True,
@@ -78,7 +78,7 @@ def mlops_workflow():
             "AWS_SECRET_ACCESS_KEY": Variable.get("AWS_SECRET_ACCESS_KEY"),
         },
         startup_timeout_seconds=300,
-        service_account_name="airflow-sa",
+        service_account_name="""airflow-sa""",
     )
     def model_training_op(processed_data_path):
         from components.model_training import model_training_raw
@@ -92,8 +92,8 @@ def mlops_workflow():
 
     @task.kubernetes(
         image=mlops_base_image,
-        task_id="model_evaluation_op",
-        namespace="airflow",
+        task_id="""model_evaluation_op""",
+        namespace="""airflow""",
         in_cluster=True,
         get_logs=True,
         do_xcom_push=True,
@@ -102,7 +102,7 @@ def mlops_workflow():
             "AWS_SECRET_ACCESS_KEY": Variable.get("AWS_SECRET_ACCESS_KEY"),
         },
         startup_timeout_seconds=300,
-        service_account_name="airflow-sa",
+        service_account_name="""airflow-sa""",
     )
     def model_evaluation_op(model_path, processed_data_path):
         from components.model_evaluation import direct_model_evaluation
